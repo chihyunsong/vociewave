@@ -1,0 +1,65 @@
+<% sec = Time.now - @playlist.created_at 
+if sec > 60*60*24
+	updated = (sec / (60*60*24)).to_i.to_s + " 일 전"
+elsif sec > 60*60
+	updated = (sec / (60*60)).to_i.to_s + " 시간 전"
+elsif sec > 60
+	updated = (sec / 60).to_i.to_s + " 분 전"
+else
+	updated = sec.to_i.to_s + " 초 전"
+end
+%>
+<% str = "" %>
+<% if @playlist.record_ids.empty? %> 
+<% else 
+	l = @playlist.record_ids.length - 1
+	for i in 0..l
+		r = Record.find(@playlist.record_ids[i])
+		if r.private == 0 or @self	
+			str = str + r.user.nick_name + "*!*" + r.title + "*!*" + r.file.url + "*!*" + r.id.to_s + "*!*" + @playlist.title + "!!!"
+		end 
+	end
+end %>
+<p id="notice"><%= notice %></p>
+<div style="width: 77%;margin: 0 auto;display: block;">
+	<div style="height:205px; background-image: url('/assets/mixer.jpg'); color:white">
+		<div style="padding-top:0.5cm;padding-left:0.5cm;">
+		<% if !@playlist.pic.url.empty? %>
+		<%= image_tag(@playlist.pic.url(:medium), size: '150x150', class: 'img-round',style:'float:left;') %>
+		<% else %>
+		<%= image_tag(@playlist.user.profile_pic.url(:medium), size: '150x150', class: 'img-round', style:'float:left;') %>
+		<% end %>
+		</div>
+		<div style="width: 90%; padding-left:5cm; ">
+
+		<h3><b style="color:white"><%= @playlist.title %></b></h3>
+		<p class="muted" style="float:right;">게시일: <%= updated %>
+		<br />
+		<button class="btn btn-lg btn-default" onclick="add_to_song_playlist('<%=str%>')">플레이어에 추가</button>
+		</p> 	
+		<b> 작성자: <a href ="/users/<%= @user.id %>" style="color:white"><%= @user.nick_name %></a> </b><br />
+		<b> 조회수: <%= @playlist.view %></b><br />
+		<b> 좋아요: <%= @playlist.like %> </b><br /><br />
+		<a href="/increment_like_playlist?id=<%=@playlist.id%>" type="button" class="btn btn-primary btn-sm" data-remote="true"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;좋아요</a>
+		<button type="button" class="btn btn-success btn-sm" onclick="show_share_address('<%=request.original_url[/[^\/]*\/\/[^\/]*\//][0..-2] + url_for(:controller => :playlists, :action => :show, :id => @playlist.id)%>', '플레이리스트: <%=@playlist.title%>', '')"><span class="glyphicon glyphicon-share" aria-hidden="true"></span>&nbsp;공유하기</button>
+		</div>
+</div>
+</div>
+<br />
+<br />
+<div style="padding-top:0.3cm;padding-bottom:1cm; 
+padding-left:1cm;padding-right:3.cm;
+width: 80%;margin: 0 auto;display: block; ">
+<div style="padding-right:2cm;">
+<% if @playlist.record_ids.empty? %> 
+	<p>플레이리스트에 노래가 아직 없습니다.</p>
+<% else %>
+	<% l = @playlist.record_ids.length - 1 %>
+	<% for i in 0..l %>
+		<% r = Record.find(@playlist.record_ids[i]) %>
+		<% if r.private == 0 or @self %>	
+		 <%= render partial: 'records/record', :locals => {:record => r} %>
+		<% end %>
+	<% end %>
+<% end %>
+</div>

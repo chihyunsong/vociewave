@@ -1,0 +1,8 @@
+<p>환영합니다! <%= @email %>님</p>
+
+<p>계정을 활성화 시키시려면 밑에 링크를 눌러주세요.</p>
+
+<p><%= link_to '계정 활성화', confirmation_url(@resource, confirmation_token: @token) %></p>
+<hr />
+
+<b>Voice Wave</b>

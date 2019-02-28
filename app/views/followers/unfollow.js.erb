@@ -1,0 +1,8 @@
+NProgress.done();
+<% if @error %>
+alert('<%=@error%>');
+<% else %>
+$('#unfollow_<%=@userid%>').hide();
+$('#follow_<%=@userid%>').show();
+<% end %>
+configureNProgress();

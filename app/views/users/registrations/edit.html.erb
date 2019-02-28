@@ -1,0 +1,88 @@
+
+ 
+<div class="container-fluid" id ="main_edit_user">
+<div class="col-md-2 sidebar">
+<%= image_tag(current_user.profile_pic.url(:medium), style: 'width:100%') %>
+<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#new_record_form" style="margin:auto;">
+  프로필사진 바꾸기
+</button><br/>
+<div class="modal fade" id="new_record_form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">프로필 사진 바꾸기</h4>
+      </div>
+      <div class="modal-body">
+        <div class="well bs-component">
+            <%= form_tag '/update_profile_pic', method: :post, multipart: true, :html => {class: 'form-horizontal'} do %>
+              <fieldset>
+                <%= token_tag form_authenticity_token %>
+                <div id='file_field' class="form-group">
+                  <%= label_tag :profile_pic, '파일 선택 (필수-5MB 이하):', :class=>'col-lg-2 control-label'%>
+                  <div class="col-lg-10">
+                    <%= file_field_tag :profile_pic, multipart:true, name: 'user[profile_pic]', :class=>'form-control' %>
+                  </div>
+                </div>
+                
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" onclick=" $('#spinner').show();">&nbsp;확인&nbsp;</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;취소&nbsp;</button>
+                </div>
+
+              </fieldset>
+            <% end %>
+          </div>
+          <div id="spinner" class="sk-wave" style="display:none; position: absolute; top: 40%;left: 50%;">
+                  <div class="sk-rect sk-rect1"></div>
+                  <div class="sk-rect sk-rect2"></div>
+                  <div class="sk-rect sk-rect3"></div>
+                  <div class="sk-rect sk-rect4"></div>
+                  <div class="sk-rect sk-rect5"></div>
+                </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<span ><a href ="<%= current_user.id%>" class="user_nick_name"><%= current_user.nick_name %></span></a>
+
+
+<div style="margin-bottom:10px;margin-top:4px;height:100px;width:100%;overflow-y:auto;border-bottom:1.5px solid #d9230f;">
+    <div style="margin-top:0.2cm; word-break: break-all; padding-top: 1px"; >
+      <%= @user.description %>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-10 main">
+<h2 class="page-header"><span style="font-weight:bold"><%=current_user.nick_name%></span>님의 프로필</h2>
+  <ul class="nav nav-pills">
+    <li class="active" id ="profile"><a href ="#" data-remote =true >프로필</a></li>
+    <li class="" id="account"><a href="#" data-remote = true>계정</a></li>
+    
+  </ul>
+  <br />
+ 
+<div id ="form_edit" >
+<%= render 'profile' %>
+</div>
+</div>
+</div>
+<script>
+$('#profile').click(function (event){
+  $('#form_edit').html("<%= j render 'profile'%>");
+  document.getElementById("profile").className = "active";
+  document.getElementById("account").className = "";
+});
+$('#account').click(function (event){
+  $('#form_edit').html("<%= j render 'account'%>");
+    document.getElementById("account").className = "active";
+    document.getElementById("profile").className = "";
+});
+
+
+</script>
+
+
+

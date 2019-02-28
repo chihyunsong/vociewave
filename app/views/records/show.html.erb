@@ -1,0 +1,137 @@
+<% sec = Time.now - @record.created_at 
+if sec > 60*60*24
+	string = (sec / (60*60*24)).to_i.to_s + " 일 전"
+elsif sec > 60*60
+	string = (sec / (60*60)).to_i.to_s + " 시간 전"
+elsif sec > 60
+	string = (sec / 60).to_i.to_s + " 분 전"
+else
+	string = sec.to_i.to_s + " 초 전"
+end
+%>
+<div class="container" style="width: 85%; max-width: 1000px; margin:auto;">
+
+	<div class="jumbotron" >
+        <h1 style="color:#444444;"> <%=@record.title%></h1>
+        <p class="lead"><% if @record.description.nil? or @record.description.length < 1 %>
+	    			설명이 없습니다.
+	    		<% else %>
+	    			<%=@record.description%>	
+	    		<% end %></p>
+		<div class="row">
+	    	<div class="col-md-2 record_button">
+	    		<% if browser.mobile? or browser.tablet? %>
+					<button id="play_<%=@record.id%>" class="individual_play_button btn btn-default" onclick='add_song_to_footer("<%=@record.title%>","<%=@record.user.nick_name%>","<%=@record.file.url%>","<%=@record.id%>","<%=@record.user.id%>")'>플레이</button>
+					<button id="pause_<%=@record.id%>" class="individual_pause_button btn btn-default" style="display:none" onclick="pause_song('<%=@record.id%>')">중지</button>
+				<% else %>
+					<div id="play_<%=@record.id%>" class="individual_play_button control_button" style="height:50px; width:50px; float:left; background-image:url('/assets/red-play-large.png')" onclick='add_song_to_footer("<%=@record.title%>","<%=@record.user.nick_name%>","<%=@record.file.url%>","<%=@record.id%>","<%=@record.user.id%>")'></div>
+					<div id="pause_<%=@record.id%>" class="individual_pause_button control_button" style="height:50px; width:50px; float:left; background-image:url('/assets/red-pause-large.png'); display:none" onclick="pause_song('<%=@record.id%>')"></div>
+				<% end %>
+          	</div>
+			<div class="col-md-10"  style="height:70px; margin-top:7px">
+				<div class="row " style="margin-bottom:8px; margin-top:5px;">
+				<div style="float:left;margin-left:0px" class="record_current_time">
+          		<span id="current_minute_<%=@record.id%>">0</span>:<span id="current_second_<%=@record.id%>">00</span>
+	          	</div>
+	          	<div>
+	          	<input id="slider_<%=@record.id%>" type="range" class="amplitude-song-slider record_slider" value="0" style="width:80%;float:left;margin-left:5px;margin-top:2px">
+			  	</div>
+			  	<div style="float:left;margin-left:5px" class="record_duration_time">
+			  	<span id="duration_minute_<%=@record.id%>">0</span>:<span id="duration_second_<%=@record.id%>">00</span>
+			  	</div>
+			  	</div>    
+          	</div>
+        </div>
+	    
+        <div class="row">
+	        <div class="col-md-6">
+		        <a href="/increment_like?id=<%=@record.id%>" type="button" class="btn btn-primary btn-sm" data-remote="true"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;좋아요</a>
+			    <button type="button" class="btn btn-success btn-sm" onclick="show_share_address('<%=request.original_url[/[^\/]*\/\/[^\/]*\//][0..-2] + url_for(:controller => :records, :action => :show, :id => @record.id)%>', '<%=@record.title%>', '<%=@record.description%>')"><span class="glyphicon glyphicon-share" aria-hidden="true"></span>&nbsp;공유하기</button>
+			    <% if !current_user.nil? and current_user.id == @record.user_id %>
+			     <a href= "<%=edit_record_path(@record)%>" type="button" class="btn btn-info btn-sm show_progress_bar">
+	          	<span class="glyphicon glyphicon-edit"></span> 수정 </a>
+	    		<% end %>
+			    <a href="/add_to_playlist_form?id=<%=@record.id%>" type="button" class="btn btn-default btn-sm" data-remote="true"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="플레이리스트에 추가"></span>&nbsp;추가</a>
+	    	</div>
+		    <div class="col-md-5">
+		        <a id='audio_like_<%=@record.id%>' href="/increment_like?id=<%=@record.id%>" data-remote="true" class="btn btn-link" style="color:#414141; float:right " data-remote="true">
+			  			<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>&nbsp;&nbsp;<%=@record.like%>
+		        <a href="#" class="btn btn-link" style="color:#414141; float:right">
+		  			<span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span>&nbsp;&nbsp;<%=@record.view%>
+					</a>
+			</div>
+			<div class="col-md-1"></div>
+		</div>    	
+		<div class="row">
+			<div class="col-md-8">
+					<a href="/users/<%=@record.user.id%>" class="user_nick_name show_progress_bar"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+	    		 <%= @record.user.nil? ? 'undefined' : @record.user.nick_name%></a>
+		    		게시일: <%=@record.created_at.strftime('%F')%>		 
+			</div>
+			<div class="col-md-4">
+				<% if @likers.length > 3 %>
+
+	    		<a href="/users/<%=@likers[0].id%>" class="user_nick_name show_progress_bar"><%= @likers[0].nick_name %></a>, <a href="/users/<%=@likers[1].id%>" class="user_nick_name show_progress_bar"><%= @likers[1].nick_name %></a>, <a href="/users/<%=@likers[2].id%>" class="user_nick_name show_progress_bar"><%= @likers[2].nick_name %></a> 님 외 <a href="#" id="<%=@record.id%>_likers" class="user_nick_name" onmouseover="popover('<%=@record.id%>_likers');"><%=(@likers.length - 3).to_s %>명</a>이 좋아합니다.
+	    			<div id="<%=@record.id%>_likers_content" style="display: none">
+						<div>
+							<% @likers.each do |liker| %>
+			    				<a href='/users/<%=liker.id%>' class='user_nick_name show_progress_bar'><span class="glyphicon glyphicon-user" aria-hidden="true"></span><%=liker.nick_name%></a><br/>
+
+			    			<% end %> 
+						</div>
+					</div>  
+					<!-- Popover 2 hidden title -->
+					<div id="<%=@record.id%>_likers_title" style="display: none">
+						좋아하는 사람들
+					</div> 
+	    		<% else 
+	    			str = ""
+	    			@likers.each do |liker|
+	    				str = str +"<a href='/users/#{liker.id}' class='user_nick_name show_progress_bar'>#{liker.nick_name}</a>, "
+
+	    			end %>
+	    			<% if @likers.length == 0 %>
+	    				첫번째로 이 보이스를 좋아해 보세요!
+	    			<% else %>
+	    				<%=str[0..-3].html_safe%> 님이 좋아합니다.
+    				<% end %>
+	    		<% end %>
+			</div>
+		</div>
+		<% tags = @record.tags %>
+		<% if tags.length > 0 %>
+			<br/>
+			<div class="row" style="margin-left:10px">
+				<% tags.each do |tag| %>
+					<a href="/search?tag=<%=tag.id%>" class="show_progress_bar" style="color:#777777" data-remote="true">#<%=tag%></a>
+				<% end %>
+			</div>
+		<% end %>
+	</div>
+
+    <div>
+	    <br/><div>
+    			<%= form_tag('/comments', multipart: true, html: {class: 'form-horizontal'}, remote: true) do %>
+					<fieldset>
+					<legend>댓글</legend>
+						<%= text_area_tag :description, nil, rows: 1, :class => 'form-control comment_text', :value => "", :style => 'width:90%;float:left' %>
+						
+					<input type="hidden" name="record_id" value="<%=@record.id%>">
+					<button type="submit" class="btn btn-default btn-md" style="float:left; margin-left:10px;">등록</button>
+					</fieldset>
+            	<% end %>
+            </div>
+	    </div>
+	    <br />
+	    <br />
+	    <div id="list_comments_<%=@record.id%>" class="row" style="margin-left:10px;width:95%;">
+	    	<% if @comments.length == 0 %>
+	    		아직 등록 된 댓글이 없습니다.
+	    	<% end %>
+	    	<% @comments.each do |c| %>
+	    		<%= render :partial => 'comments/detail', :locals => {:comment => c}%>
+	    	<% end %>	
+	    </div>
+	</div>
+</div>
+<hr style="margin: 0px;">

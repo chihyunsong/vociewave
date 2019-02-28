@@ -1,0 +1,14 @@
+
+<% if !@error.nil? %>
+alert("이미 신고하셨거나 혹은 자신이 업로드한 파일은 신고하실 수 없습니다.");
+<% else %>
+
+$('#user_id').val(<%= current_user.id %>);
+$('#record_id').val(<%= @record.id %>);
+$('#content').val("");
+
+$('#record_title').html('제목: <b><%= @record.title %></b>');
+$('#report_modal').modal('show');
+<% end %>
+
+

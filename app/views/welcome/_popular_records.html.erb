@@ -1,0 +1,78 @@
+<div class="bs-component" id ="popular_record">
+	<div class="row">
+		<div class="col-md-9">
+			<ul class="nav nav-pills">
+				<% if !current_user.nil? %>
+					<% @selected_category_id == 'news_feed' ? active = "class=active" : active="" %> 
+					<li id='main_category1' <%=active%> data-toggle="tooltip" data-placement="top" title="당신이 팔로우 하고 있는 유저들의 보이스들입니다."><a href="/main_category_select?id=news_feed" data-remote="true" class="show_progress_bar">뉴스피드</a></li>
+				<% end %>
+				<% @selected_category_id == 'all' ? active = "class=active" : active="" %>
+				<li id='main_category1' <%=active%>><a href="/main_category_select?id=all" data-remote="true" class="show_progress_bar">전체</a></li>
+				<% Category.all.each do |c| %>
+					<% @selected_category_id.to_i == c.id ? active = "class=active" : active = "" %>
+					<li id='main_category_<%=c.id%>' <%=active%>>
+						<a href="/main_category_select?id=<%=c.id%>" data-remote="true" class="show_progress_bar"><%=c.name%></a>
+					</li>
+				<% end %>
+			</ul>
+		</div>
+		<div class="col-md-3">
+			<ul class="nav nav-pills">
+				<% @sort_by == 'time' ? liclass = 'active' : liclass= '' %>
+				<li class="<%=liclass%>"><a href="/main_category_select?id=<%=@selected_category_id%>&sort_by=time" style="font-size:10px; float:right" data-remote='true' class="show_progress_bar">최신순</a></li>
+				<% @sort_by.include?('popularity') ? liclass = 'active' : liclass= '' %>
+				<li class="dropdown <%=liclass%>">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes" style="font-size:10px;" >인기순<span class="caret"></span></a>
+					<ul class="dropdown-menu" aria-labelledby="themes">
+						<% @sort_by == 'popularity_today' ? liclass = 'active' : liclass= '' %>
+						<li class="<%=liclass%>">
+						
+							<a href="/main_category_select?id=<%=@selected_category_id%>&sort_by=popularity_today"  data-remote='true' class="<%=liclass%> show_progress_bar">오늘</a>
+						</li>
+						<% @sort_by == 'popularity_week' ? liclass = 'active' : liclass= '' %>
+						<li class="<%=liclass%>">	
+							<a href="/main_category_select?id=<%=@selected_category_id%>&sort_by=popularity_week"  data-remote='true' class="<%=liclass%> show_progress_bar">이번주</a>
+						</li>
+						<% @sort_by == 'popularity_all' ? liclass = 'active' : liclass= '' %>
+						<li class="<%=liclass%>">
+							<a href="/main_category_select?id=<%=@selected_category_id%>&sort_by=popularity_all"  data-remote='true' class="<%=liclass%> show_progress_bar">전체</a>
+						</li>
+					<ul>
+				</li>	
+			</ul>
+		</div>
+	</div>
+	<hr style="margin: 0px; margin-top:3px">
+	<% if session[:records].length == 0 %>
+		아직 보이스가 없습니다.
+	<% else %>
+		<% offset = 0 %>
+		<% part = session[:records][offset,5] %>
+		<% if !part.nil? %>
+			<% (0..5).each do |i| %>
+			<% if !part[i].nil? %>
+				<% r = Record.find(part[i]) %>
+					<%= render partial: 'records/record', :locals => {:record => r} %>
+				<% end%>
+			<% end %>	
+		<% end %>
+		<% offset = offset + 5 %>
+
+		<% next_r = session[:records] [offset,5] %>
+	<% end %>
+	
+</div>
+
+<div class="bs-component-more" id="more_records">
+
+<% if !next_r.nil? %>
+	<a data-remote='true' class="show_progress_bar" href="<%=url_for :controller => 'welcome', :action => 'records_more', :id => offset%>" style="font-weight: bold; color:#861609; font-size:15px;">더 보기...</a>
+<% end%>
+</div>
+<style>
+.bs-component-more{
+	text-align:right;
+	font-size:16px;
+
+}
+</style>

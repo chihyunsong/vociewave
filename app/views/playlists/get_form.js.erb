@@ -1,0 +1,11 @@
+$('#user_id').val(<%= current_user.id %>);
+$("#playlist_record_title").html("<%= @record.title %>");
+$("#add_playlist_record").val(<%= @record.id %>);
+$('#playlist_modal').modal('show');
+$("#checkbox_playlists").html('');
+<% Playlist.where(user_id:current_user.id).each do |l| %>
+
+        $("#checkbox_playlists").append('<div class="bs-callout bs-callout-danger div_hover_background_color" style="padding-left:3px; padding-bottom:3px;">');
+        $("#checkbox_playlists").append('<p><input type="checkbox" name="checked[]" value=<%= l.id %> > <%=l.title%> </p></div>');
+
+<% end %>  

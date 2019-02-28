@@ -1,0 +1,6 @@
+<% if @error.nil? %>
+	$('.comment_text').val("");
+	$('#list_comments_<%=@record.id%>').prepend( "<%= j render :partial => 'detail', :locals => {:comment => @comment}%>");
+<% else %>
+	alert('<%=@error%>');
+<% end %>

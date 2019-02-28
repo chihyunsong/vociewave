@@ -1,0 +1,37 @@
+
+<div class="container text-center">
+    
+        <h2 class="form-signin-heading">비밀번호 변경</h2>
+
+      
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+  <%= devise_error_messages! %>
+  <%= f.hidden_field :reset_password_token %>
+
+  <div class="form-group">
+    <%= f.label :password, "새로운 비밀번호" %><br />
+    <% if @minimum_password_length %>
+    <em>최소 (<%= @minimum_password_length %> 글자)</em>
+    <% end %><br />
+    <%= f.password_field :password, autofocus: true, autocomplete: "off" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :password_confirmation, "비밀번호 확인" %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "비밀번호 변경", :class=>"btn btn-primary" %>
+  </div>
+<% end %>
+<small class="text-muted">페이스북이나 구글로 쉽게 로그인하세요!</small>
+      <br><br>
+
+      
+<p>
+<a class="btn social-login-btn social-facebook" href="<%=user_omniauth_authorize_path(:facebook)%>" style="width:80px; background-color: #4c699e; color:#FFFFFF"><i class="fa fa-facebook"></i></a>
+<a class="btn social-login-btn social-google" href="<%=user_omniauth_authorize_path(:google_oauth2)%>" style="width:80px;  background-color: #be5238; color:#FFFFFF"><i class="fa fa-google-plus"></i></a>
+</p>
+<%= render "users/shared/links" %>
+</div>

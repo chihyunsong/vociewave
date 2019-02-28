@@ -1,0 +1,4 @@
+NProgress.done();
+$('#main_popular_records').html("<%= j render :partial => 'popular_records', :locals => {:records => @records} %>");
+$('[data-toggle="tooltip"]').tooltip();
+configureNProgress();

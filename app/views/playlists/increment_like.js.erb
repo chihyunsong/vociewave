@@ -1,0 +1,8 @@
+<% if @error %>
+alert("이미 플레이리스트 <%=@playlist.title%> 를 좋아요 하셨습니다.")
+<% else %>
+$('#playlist_like_<%=@playlist.id%>').fadeOut(500, function(){
+		$('#playlist_like_<%=@playlist.id%>').html('<span id="heart_<%=@playlist.id%>" class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>&nbsp;&nbsp;<%=@playlist.like%>');
+	});
+	$('#playlist_like_<%=@playlist.id%>').fadeIn(500)
+<% end %>

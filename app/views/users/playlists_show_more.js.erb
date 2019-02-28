@@ -1,0 +1,24 @@
+NProgress.done();
+<% part = session[:records][@offset, 5] %>
+<% if !part.nil? %>		
+	var tmp_div=document.createElement('div');
+	tmp_div = $(tmp_div).html("").hide();
+	<% (0..5).each do |i| %>
+	<% if !part[i].nil? %>
+		<% r = Playlist.find(part[i]) %>
+		<% if !r.private %>
+			$(tmp_div).append("<%= j render partial: 'playlists/playlist', :locals => {:playlist => r, :is_self => @self} %>")
+		<% end %>
+		<% end%>
+	<% end %>
+	$("#user_show_main_content").append(tmp_div);
+	tmp_div.slideDown();
+<% end %>
+<% @offset = @offset + 5 %>
+<% next_r = session[:records] [@offset, 5] %>
+<% if !next_r.nil? %>
+$("#more_records").html("<a data-remote='true' class='show_progress_bar' href='/playlists_show_more?id=<%=@offset%>&user_id=<%=params[:user_id]%>' style='font-weight: bold; color:#861609; font-size:15px; float:right;'>더 보기...</a>")
+<% else %>
+$("#more_records").html("")
+<% end %>
+configureNProgress();

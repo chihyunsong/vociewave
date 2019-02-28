@@ -1,0 +1,62 @@
+<div style="max-width: 1200px; margin:auto;">
+<% if !@user.nil? and @user.length > 0 %>
+	<% user = @user.first %>
+	<div style=" padding-left:10px; padding-bottom:3px;" class="bs-callout bs-callout-danger div_hover_background_color">
+    <div class="row">
+	    <div class="col-md-2">
+	    <a href="/users/<%=user.id%>" class="show_progress_bar" style="font-weight: bold; color:#560E06; font-size:12px; margin: auto;">
+	    <%= image_tag(user.profile_pic.url(:thumb), size: '90x90', class: 'rcorners') %><br />
+    		<%=user.nick_name%></a>
+	    </div>
+	   
+	    <div class="col-md-7" style="padding-top:17px;">
+		    <%=user.description%>
+	    </div>
+	    
+	    <div class="col-md-3" style="padding-top:17px;">
+	    	<a href="#" class="btn btn-link" style="color:#414141; text-decoration:none;">
+  			<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>&nbsp;&nbsp;인기도: <%=user.fame%>
+			</a><br />
+	    </div>
+    </div>
+    <br />
+<% end %>
+<% if session[:records].length == 0 %>
+	찾으시는 검색어에 대한 보이스가 없습니다.
+<% else %>
+
+총 <%=session[:records].length%> 개의 보이스가 있습니다.
+<br /><br />
+
+<div id="search_result">
+
+<% offset = 0 %>
+<% part = session[:records][offset,5] %>
+<% if !part.nil? %>
+	<% records = Record.includes(:user).find(part[0..5]) %>
+	<% records.each do |r| %>
+		<% if !r.nil? %>
+			<%= render partial: 'records/record', :locals => {:record => r} %>
+		<% end%>
+	<% end %>		
+<% end %>
+<% offset = offset + 5 %>
+
+<% next_r = session[:records] [offset,5] %>
+
+</div>
+
+<div class="bs-component-more" id="more_records">
+<% if !next_r.nil? %>
+	<a data-remote='true' class="show_progress_bar" href="<%=url_for :controller => 'records', :action => 'search', :more => offset%>" style="font-weight: bold; color:#861609; font-size:12px;">더 보기...</a>
+<% end%>
+</div>
+<style>
+.bs-component-more{
+	text-align:right;
+	font-size:16px;
+
+}
+</style>
+<% end %> 
+</div>

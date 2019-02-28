@@ -1,0 +1,4 @@
+<% if !@error.nil? %>
+	$('tr').remove('#<%= @record.id %>"');
+	alert("성공적으로 무시되었습니다.");
+<% end %>

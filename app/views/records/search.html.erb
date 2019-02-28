@@ -1,0 +1,40 @@
+<div style="max-width: 1200px; margin:auto;">
+<% if session[:records].length == 0 %>
+	찾으시는 검색어에 대한 보이스가 없습니다.
+<% else %>
+
+총 <%=session[:records].length%> 개의 보이스가 있습니다.
+<br /><br />
+
+<div id="search_result">
+
+<% offset = 0 %>
+<% part = session[:records][offset,5] %>
+<% if !part.nil? %>
+	<% records = Record.includes(:user).find(part[0..5]) %>
+	<% records.each do |r| %>
+		<% if !r.nil? %>
+			<%= render partial: 'records/record', :locals => {:record => r} %>
+		<% end%>
+	<% end %>		
+<% end %>
+<% offset = offset + 5 %>
+
+<% next_r = session[:records] [offset,5] %>
+
+</div>
+
+<div class="bs-component-more" id="more_records">
+<% if !next_r.nil? %>
+	<a data-remote='true' class="show_progress_bar" href="<%=url_for :controller => 'records', :action => 'search', :more => offset%>" style="font-weight: bold; color:#861609; font-size:12px;">더 보기...</a>
+<% end%>
+</div>
+<style>
+.bs-component-more{
+	text-align:right;
+	font-size:16px;
+
+}
+</style>
+<% end %> 
+</div>

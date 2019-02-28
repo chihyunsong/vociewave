@@ -1,0 +1,135 @@
+<div style="max-width: 1200px; margin:auto;">
+
+<% if !@show_upload_error_message.nil? %>
+  <% if @show_upload_error_message %>
+    <div class="col-lg-12">
+      <div class="bs-component">
+        <div class="alert alert-dismissible alert-warning">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <h4>업로드 실패!</h4>
+          <p>올바른 오디오파일인지(mp3, m4a), 제목을 입력하셨는지 혹은 파일사이즈가 25MB 이하인지 확인해주시기 바랍니다.</p>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="col-lg-12">
+      <div class="bs-component">
+        <div class="alert alert-dismissible alert-success">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <h4>업로드 성공!</h4>
+          <p>새로운 보이스가 성공적으로 업로드 되었습니다.</p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<div class="modal fade" id="picture_form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">플레이리스트 <b id ="playlist_name"> </b>&nbsp 사진 바꾸기</h4>
+      </div>
+      <div class="modal-body">
+        <div class="well bs-component"><%= form_tag '/update_playlist_pic',remote: true, method: :post, multipart: true, :html => {class: 'form-horizontal'} do %>
+              <fieldset>
+                <%= token_tag form_authenticity_token %>
+                <div id='file_field' class="form-group">
+                  <%= hidden_field_tag :user_id %>
+                  <%= hidden_field_tag :playlist_id %>
+                  <%= label_tag :pic, '파일 선택 (필수-5MB 이하):', :class=>'col-lg-2 control-label'%>
+                  <div class="col-lg-10">
+                    <%= file_field_tag :pic, multipart:true, name: 'playlist[pic]', :class=>'form-control' %>
+                  </div>
+          
+                </div>
+                
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" onclick=" $('#spinner2').show();">&nbsp;확인&nbsp;</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;취소&nbsp;</button>
+                      </fieldset><% end %>
+                </div>
+                <div id="spinner2" class="sk-wave" style="display:none; position: absolute; top: 40%;left: 50%;">
+                  <div class="sk-rect sk-rect1"></div>
+                  <div class="sk-rect sk-rect2"></div>
+                  <div class="sk-rect sk-rect3"></div>
+                  <div class="sk-rect sk-rect4"></div>
+                  <div class="sk-rect sk-rect5"></div>
+                </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2 sidebar">
+          <%= render :partial => 'users/myspace_user_div' %>
+          <br />
+          <ul class="nav nav-sidebar">
+            <% if @self %>
+            <li><a href="/voices_i_uploaded?user_id=<%=@user.id%>" class="show_progress_bar" data-remote="true">내 보이스</a></li>
+            <li><a href="/voices_i_liked?user_id=<%=@user.id%>" class="show_progress_bar" data-remote="true">내가 좋아한 보이스</a></li>
+            <li><a href="/playlists_i_liked?user_id=<%=@user.id%>" class="show_progress_bar" data-remote="true">내가 좋아한 플레이리스트</a></li>
+            <% end %>
+            <li><a href="/users/<%=@user.id%>/playlists" class="show_progress_bar" data-remote="true">플레이리스트</a></li>
+            <li><a href="/get_followers?user_id=<%=@user.id%>" class="show_progress_bar" data-remote="true">팔로워</a></li>
+            <li><a href="/get_followings?user_id=<%=@user.id%>" class="show_progress_bar" data-remote="true">팔로잉</a></li>
+            
+          </ul>
+          
+        </div>
+        <div class="col-md-10 main">
+          <h2 class="page-header" style="margin-top:15px;"><span style="font-weight:bold"><%=@user.nick_name%></span>님의 보이스<span class="badge" style="float:right; margin-right:10px; background-color:#CE3B38; margin-top:5px;">인기도 <%=@user.fame%></span></h2>
+
+          <div class="row placeholders">
+            <div class="col-xs-3 col-sm-2 placeholder"></div>
+            <div class="col-xs-6 col-sm-3 placeholder" style="margin:auto">
+              <%= image_tag("user_page_microphone.png",alt: "number of records",  :data => {:toggle => "tooltip", :placement => "top", :title => "#{@user.nick_name}님이 업로드하신 총 보이스 수 입니다."})%>
+              <h4>보이스</h4>
+              <span class="text-muted"><%= @self ? @length : @records.length%> 개</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <a href="/get_followers?user_id=<%=@user.id%>" data-remote="true" style="text-decoration:none">
+              <%= image_tag("user_page_person.png",alt: "number of followers", :data => {:toggle => "tooltip", :placement => "top", :title => "#{@user.nick_name}님의 팔로워 수 입니다."})%>
+              <h4>팔로워</h4>
+              <span class="text-muted"><%=@user.followers.length%> 명</span>
+              </a>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <%= image_tag("user_page_like.png",alt: "number of likes", :data => {:toggle => "tooltip", :placement => "top", :title => "#{@user.nick_name}님이 받으신 총 좋아요 수 입니다."})%>
+              <h4>좋아요</h4>
+              <span class="text-muted"><%= @self ? @likes : @records.map(&:like).sum%> 개</span>
+            </div>
+            <div class="col-xs-3 col-sm-2 placeholder"></div>
+          </div>
+          <br /><br /><hr style="margin:0" />
+          <div style="max-width: 1000px;" id="user_show_main_content">
+          <% if session[:records].length == 0 %>
+            아직 보이스가 없습니다.
+          <% else %>
+            <% offset = 0 %>
+            <% part = session[:records][offset,5] %>
+            <% if !part.nil? %>
+              <% (0..5).each do |i| %>
+              <% if !part[i].nil? %>
+                <% r = Record.find(part[i]) %>
+                  <%= render partial: 'records/record', :locals => {:record => r, :is_self => @self} %>
+                <% end%>
+              <% end %> 
+            <% end %>
+            <% offset = offset + 5 %>
+
+            <% next_r = session[:records] [offset,5] %>
+          <% end %>
+          </div>
+          <div class="bs-component-more" id="more_records">
+            <% if !next_r.nil? %>
+              <a data-remote='true' class="show_progress_bar" href="<%=url_for :controller => 'users', :action => 'users_show_more', :id => offset, :user_id => @user.id%>" style="font-weight: bold; color:#861609; font-size:15px; float:right; margin-right:20px;">더 보기...</a>
+            <% end%>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

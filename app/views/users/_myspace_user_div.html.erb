@@ -1,0 +1,134 @@
+
+<%= image_tag(@user.profile_pic.url(:medium), :style => 'width:100%') %><br/><br/>
+<a href="/users/<%=@user.id%>">
+<span style="font-size:14px; font-weight: bold; color:#560E06"><%= @user.nick_name %></span></a>
+
+<% if !@self %>
+  <% if !current_user.nil? and current_user.follows?(@user) %>
+    <a id='unfollow_<%=@user.id%>' class="show_progress_bar" href="/unfollow?id=<%=@user.id%>" data-remote="true" style="text-decoration:none;"><span class="label label-danger">언팔로우</span></a>
+    <a id='follow_<%=@user.id%>' class="show_progress_bar" href="/follow?id=<%=@user.id%>" data-remote="true" style="text-decoration:none; display:none;"><span class="label label-warning">팔로우</span></a>
+  <% else %>
+   <a id='unfollow_<%=@user.id%>' class="show_progress_bar" href="/unfollow?id=<%=@user.id%>" data-remote="true" style="text-decoration:none; display:none;"><span class="label label-danger">언팔로우</span></a>
+    <a id='follow_<%=@user.id%>' class="show_progress_bar" href="/follow?id=<%=@user.id%>" data-remote="true" style="text-decoration:none;"><span class="label label-warning">팔로우</span></a>
+  <% end %>
+<% else %>
+
+  <a id="user_profile_edit_button" class="show_progress_bar" style="margin-right:10px;float:right" href="edit">  <%= image_tag('edit.png', size: "20x20") %></a>
+
+<% end %>
+
+
+<br />
+
+<% if !@user.description.blank? %>
+  <div style="margin-bottom:10px;margin-top:4px;height:100px;width:100%;overflow-y:auto;border-bottom:1.5px solid #d9230f;">
+    <div style="margin-top:0.2cm; word-break: break-all; padding-top: 1px"; >
+      <%= @user.description %>
+    </div>
+  </div>
+<% end %>
+
+<% if !@record.nil? %>
+<script>
+  function record_upload_validate_form(){
+    var title = $('#upload_record_title').val();
+    if (title == null || title == "") {
+        alert("제목을 입력하여 주십시오.");
+        return false;
+    }
+    if (title.indexOf("\"") > -1 ) {
+        alert("제목에 \" 가 들어갈 수 없습니다.");
+        return false;
+    }
+    
+    var file = $('#record_file').val();
+    if (file == null || file == "") {
+        alert("파일을 선택하여 주십시오.");
+        return false;
+    }
+    $('#spinner').show();
+    return true;
+  }
+</script>
+<br />
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#new_record_form" style="width:100%">
+  보이스 업로드
+</button>
+
+<div class="modal fade" id="new_record_form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">새로운 보이스</h4>
+      </div>
+      <div class="modal-body">
+        <div class="well bs-component">
+            <%= form_for @record, html: {class: 'form-horizontal', multipart: true, onsubmit: "record_upload_validate_form()"}, remote: true do |f| %>
+              <fieldset>
+              <%= token_tag form_authenticity_token %>
+                <div id='file_field' class="form-group">
+                  <%= f.label :file, "<span style='color:red'>* </span>".html_safe + '파일: ', :class=>'col-lg-2 control-label'%>
+                  <div class="col-lg-10">
+                    <%= f.file_field :file, multiple: true, id:'record_file', name: 'record[file]', :class=>'form-control' %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= f.label :title, "<span style='color:red'>** </span>".html_safe + '제목:', :class => 'col-lg-2 control-label' %>
+                  <div class="col-lg-10">
+                    <%= f.text_field :title, :class => 'form-control', id:'upload_record_title', :value => "" %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= f.label :description, '내용:', :class => 'col-lg-2 control-label' %>
+                  <div class="col-lg-10">
+                    <%= f.text_area :description, size: "10x10", :class => 'form-control', :value => "" %>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= f.label :description, '종류:', :class => 'col-lg-2 control-label' %>
+                  <div class="col-lg-10">
+                <%= f.collection_select :category_id, Category.all, :id, :name, {:include_blank => false },  {class: "form-control"} %>
+               </div>
+               </div>
+               <div class="form-group">
+                  <%= f.label :description, '비공개:', :class => 'col-lg-2 control-label' %>
+                    <%= f.check_box :private %>
+                </div>
+                <div class="form-group">
+                <%= f.label :tag_list, '<span>* </span>'.html_safe + "태그: ", :class => 'col-lg-2 control-label' %>
+                <div class="col-lg-10">
+                  <%= f.text_field :tag_list, :class => 'form-control', :placeholder => '예) 피아노, 연주, 힙합' %>
+                </div>
+              </div>
+                <div>
+                <p>
+                <span style="color:red">*</span> 필수 - 25MB 이하<br/>
+                <span style="color:red">**</span> 필수 - 30자 이하<br/>
+                <span>*</span> 태그들은 ',' 로 나눠주세요! 예) 피아노, 연주, 힙합<br/>
+                
+                <span style="font-weight:bold ">**중요</span>: 아래 확인 버튼을 누름으로써 당신은 위의 파일이 직접 녹음 혹은 제작한 파일이거나, 저작권에서 자유로운 파일이거나, 당신이 저작권자인 것을 확인합니다. VoiceWave는 올려진 파일에 대한 저작권문제에 대한 아무런 책임이 없습니다.</p>
+                </div>
+                <input id="user_id" type="hidden" name="record[user_id]" value="<%=@user.id%>">
+                <div id="spinner" class="sk-wave" style="display:none; position: absolute; top: 40%;left: 50%;">
+                  <div class="sk-rect sk-rect1"></div>
+                  <div class="sk-rect sk-rect2"></div>
+                  <div class="sk-rect sk-rect3"></div>
+                  <div class="sk-rect sk-rect4"></div>
+                  <div class="sk-rect sk-rect5"></div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" on>&nbsp;확인&nbsp;</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;취소&nbsp;</button>
+                </div>
+
+              </fieldset>
+            <% end %>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<br /><br />
+<% end %>
+

@@ -1,0 +1,15 @@
+/public/audios
+/logs
+/tmp
+/test
+/r
+config/database.yml
+config/routes.rb.orig
+config/routes_BACKUP_9868.rb
+config/routes_BASE_9868.rb
+config/routes_LOCAL_9868.rb
+config/routes_REMOTE_9868.rb
+app/assets/images/voicewave.png
+app/assets/images/vw2.png
+public/audios/6/1-04_처음엔_사랑이란게.mp3
+public/system

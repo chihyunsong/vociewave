@@ -1,0 +1,11 @@
+NProgress.done();
+<% if @error.nil? %>
+	alert("성공적으로 추가되었습니다.");
+	$('#playlist_modal').modal('hide');
+<% else %>
+	<% if @error == '1' %>
+		alert("추가하시려는 레코드가 삭제되었습니다.");
+	<% else %>
+		alert("플레이리스트를 선택해주세요.");
+	<% end %>
+<% end %>

@@ -1,0 +1,11 @@
+<div class="row" style="margin-top:3px;">
+  <div class="col-md-3">
+    <a href="/users/<%=comment.user.id%>" style="font-weight: bold; color:#560E06; font-size:12px;" class="show_progress_bar"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+         <%= comment.user.nil? ? 'undefined' : comment.user.nick_name%></a>
+  </div>
+  <div class="col-md-9">
+    <%=comment.description%>
+  </div>
+</div>
+
+<hr style="margin: auto; width:70%;">

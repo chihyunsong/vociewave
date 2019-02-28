@@ -1,0 +1,21 @@
+<h2>비밀번호를 잃어버리셨나요?</h2>
+
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+  <%= devise_error_messages! %>
+
+ <fieldset>
+  <div class="form-group">
+ 
+    <div class="col-lg-5">
+       <%= f.label :email,"이메일" %>
+      <%= f.email_field :email, :class=>'form-control' %><br/>
+       </div> 
+  </div>
+
+  <div class="actions">
+    <%= f.submit "비밀번호 재설정", :class => "btn btn-default btn-center"%>
+  </div>
+  </fieldset>
+<% end %>
+
+<%= render "users/shared/links" %>

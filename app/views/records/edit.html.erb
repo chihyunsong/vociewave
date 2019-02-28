@@ -1,0 +1,45 @@
+<div class="container" style="width: 85%; max-width: 1000px; margin:auto;">
+
+<h2>보이스 수정</h2>
+<div class="well bs-component">
+            <%= form_for @record, html: {class: 'form-horizontal', multipart: true} do |f| %>
+              <fieldset>
+                <div class="form-group">
+                  <%= f.label :title, "<span style='color:red'>* </span>".html_safe + '제목:', :class => 'col-lg-2 control-label' %>
+                  <div class="col-lg-10">
+                    <%= f.text_field :title, :class => 'form-control', id:'upload_record_title'%>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= f.label :description, '내용:', :class => 'col-lg-2 control-label' %>
+                  <div class="col-lg-10">
+                    <%= f.text_area :description, size: "10x10", :class => 'form-control'%>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= f.label :description, '종류:', :class => 'col-lg-2 control-label' %>
+                  <div class="col-lg-10">
+                <%= f.collection_select :category_id, Category.all, :id, :name, {:include_blank => false },  {class: "form-control"} %>
+               </div>
+               </div>
+               <div class="form-group">
+                  <%= f.label :description, '비공개:', :class => 'col-lg-2 control-label' %>
+                    <%= f.check_box :private %>
+                </div>
+                <div class="form-group">
+                <%= f.label :tag_list, '<span>* </span>'.html_safe + "태그: ", :class => 'col-lg-2 control-label' %>
+                <div class="col-lg-10">
+                  <%= f.text_field :tag_list, :value => f.object.tag_list.join(', '), :class => 'form-control', :placeholder => '예) 피아노, 연주, 힙합' %>
+                </div>
+                <div style="margin-left:90px;">
+                <span style="color:red">*</span> 필수 - 30자 이하<br/>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">&nbsp;확인&nbsp;</button>
+                  <button type="button" class="btn btn-default" onclick="parent.history.back();" >&nbsp;취소&nbsp;</button>
+                </div>
+
+              </fieldset>
+            <% end %>
+          </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="container" style="width: 85%; max-width: 1000px; margin:auto;">
+
+<h2>보이스 수정</h2>
+<div class="well bs-component">
+            <%= form_for @playlist, html: {class: 'form-horizontal', multipart: true} do |f| %>
+              <fieldset>
+                <div class="form-group">
+                  <%= f.label :title, "<span style='color:red'>* </span>".html_safe + '제목:', :class => 'col-lg-2 control-label' %>
+                  <div class="col-lg-10">
+                    <%= f.text_field :title, :class => 'form-control', id:'playlist_title', :placeholder => '최소 2글자 이상'%>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <%= f.label :private, '비공개:', :class => 'col-lg-2 control-label' %>
+                    <%= f.check_box :private %>
+                </div>
+                <div class="form-group">
+                  <%= f.label :record_ids, '보이스들:', :class => 'col-lg-2 control-label' %>
+                  <br /><br />
+                  <div style="margin-left:150px;">
+                  <% @playlist.record_ids.each do |p| %>
+                    <input type="checkbox" name="playlist[record_ids][]" value=<%=p%> checked> <%=Record.find(p).title%>
+                    <br />
+                  <% end %>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary">&nbsp;확인&nbsp;</button>
+                  <button type="button" class="btn btn-default" onclick="parent.history.back();" >&nbsp;취소&nbsp;</button>
+                </div>
+
+              </fieldset>
+            <% end %>
+          </div>
+</div>

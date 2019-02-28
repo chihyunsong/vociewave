@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+
+
+
+
+<div class ="container">
+<h1>신고</h1>
+<table class ="table table-bordered ">
+  <thead>
+    <tr class="success">
+      <th>신고자</th>
+      <th>RecordID</th>
+      <th>Category</th>
+      <th>신고내용</th>
+      <th>record</th>  
+      <th colspan="2">Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @reports.each do |report| %>
+      <% r = Record.find(report.record_id) %>
+      <tr id = "<%= report.id %>">
+        <td><%= User.find(report.user_id).nick_name %></td>
+        <td><%= report.record_id %></td>
+        <td><% if report.category == 1 %>
+             저작권  
+            <% elsif report.category == 2 %>
+            음란
+            <% elsif report.category == 3 %>
+            욕설 
+            <% else %>
+            기타 
+            <% end %>
+        </td>
+
+        <td><%= report.content %></td>
+        <td><%= render :partial => 'records/record', :locals => {:record => r} %></td>
+        <td><%= link_to '무시하기', ignore_report_path(report), data: { confirm: 'Are you sure?', remote:true },:type=>'button',:class=>'btn btn-success' %>
+        <%= link_to '삭제하기', r, method: :delete ,data: { confirm: 'Are you sure?', remote:true }, :type=>"button",:class=>'btn btn-primary' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+

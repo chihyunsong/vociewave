@@ -1,0 +1,8 @@
+<% if !@error.nil? %>
+	alert('이미 좋아요 하신 보이스 입니다.');
+<% else %>
+	$('#audio_like_<%=@record.id%>').fadeOut(500, function(){
+		$('#audio_like_<%=@record.id%>').html('<span id="heart_<%=@record.id%>" class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>&nbsp;&nbsp;<%=@record.like%>');
+	});
+	$('#audio_like_<%=@record.id%>').fadeIn(500)
+<% end %>

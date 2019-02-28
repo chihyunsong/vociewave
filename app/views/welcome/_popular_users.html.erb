@@ -1,0 +1,28 @@
+<div class="row">
+	<div class="col-lg-12">
+		<h3><span style="font-weight:bold">보이스 스타</span><span class="badge" style="float:right; margin-right:10px; background-color:#CE3B38; margin-top:5px;">인기도</span></h3>
+
+	</div>
+	<div class="col-lg-12">
+		<ul class="list-group">
+		<% i = 3 %>
+		<% @top_users.each do |u| %>
+			
+			<li class="list-group-item">
+				<span class="badge" style="width:30px; margin-top:5px; background-color:#CE3B38"><%=u.fame%></span>
+				<a href="/users/<%=u.id%>" style="font-weight: bold; color:#560E06" class="show_progress_bar">
+					<%= image_tag(u.profile_pic.url(:thumb), size: '30x30', class: 'rcorners') %><%= i > 0 ? image_tag("rank#{i}.png") : ''%><%=u.nick_name%></a>
+			</li>
+			<% i = i - 1 %>
+		<% end %>
+			<a id="what_is_fame" class="user_nick_name" style="float:right;" data-toggle="tooltip" data-placement="top" title="인기도를 올려보세요!   
+			인기도는 좋아요를 받을 때 마다 1씩, 다른 유저가 팔로우를 할 때 마다 5씩 올라갑니다. 보이스 스타에 도전해 보세요!">인기도란?</a>
+		</ul>
+	</div>
+	
+</div>
+<div id="tag_cloud" style="margin:20px 0px 15px 15px "> 
+	<% tag_cloud(@tags, %w(css1 css2 css3 css4)) do |tag, css_class| %>
+  		<a href="/search?tag=<%=tag.id%>" class="<%=css_class%> show_progress_bar" data-remote="true">#<%=tag.name%></a>
+	<% end %>
+</div>

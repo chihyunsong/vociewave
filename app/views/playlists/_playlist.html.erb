@@ -1,0 +1,64 @@
+<% sec = Time.now - playlist.created_at 
+if sec > 60*60*24
+	created = (sec / (60*60*24)).to_i.to_s + " 일 전"
+elsif sec > 60*60
+	created = (sec / (60*60)).to_i.to_s + " 시간 전"
+elsif sec > 60
+	created = (sec / 60).to_i.to_s + " 분 전"
+else
+	created = sec.to_i.to_s + " 초 전"
+end
+%>
+
+
+<div style=" padding-left:10px; padding-bottom:3px; z-index: -1" class="bs-callout bs-callout-danger div_hover_background_color" id="">
+    <div class="row">
+    	<div class="col-md-2">
+		   
+		    <% if playlist.pic.url.empty? %>
+		    <%= image_tag(playlist.user.profile_pic.url(:thumb), size: '90x90', class: 'img-thumbnail') %><br />
+		    <% else %>
+		    <%= image_tag(playlist.pic.url(:thumb), size: '90x90', class: 'img-thumbnail') %><br />
+		    <% end %>
+		    <% if defined?(is_self) and !is_self.nil? and is_self and playlist.user_id == current_user.id  %>
+		    <a href="/picture_form?id=<%=playlist.id%>"  class="btn btn-default btn-xs" style="margin:auto;" data-remote="true">사진 바꾸기</a>
+		    <% end %>
+ 	<br/>
+
+	    </div>
+	    <div class="col-md-7" style="padding-top:10px;">
+		    <h4>
+			    <% if playlist.private? %>
+			    	<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+			   	<% end %>
+			    <a href="<%=url_for(:controller => :playlists, :action => :show, :id => playlist.id)%>" style="color:#444444;" class="show_progress_bar"><span class="a_hover_enlarge" style="font-weight: bold; color:#444444;"><%=playlist.title%></span></a>
+
+		    </h4>
+		
+	    
+	    <a href="/increment_like_playlist?id=<%=playlist.id%>" type="button" class="btn btn-primary btn-sm" data-remote="true"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;좋아요</a>
+	   
+
+	    <button type="button" class="btn btn-success btn-sm" onclick="show_share_address('<%=request.original_url[/[^\/]*\/\/[^\/]*\//][0..-2] + url_for(:controller => :playlists, :action => :show, :id => playlist.id)%>', '플레이리스트: <%=playlist.title%>', '')"><span class="glyphicon glyphicon-share" aria-hidden="true"></span>&nbsp;공유하기</button>
+	    <% if defined?(is_self) and !is_self.nil? and is_self and playlist.user_id == current_user.id  %>
+		    
+	    <a href= "<%=edit_playlist_path(playlist)%>" type="button" class="btn btn-info btn-sm show_progress_bar">
+	          	<span class="glyphicon glyphicon-edit"></span> 수정 </a>
+		<% end %>
+		</div>	    
+	    <div class="col-md-3" style="padding-top:17px;">
+	   		<a href="#" class="btn btn-link" style="color:#414141; text-decoration:none;" data-toggle="tooltip" data-placement="top" title="플레이 횟수">
+  			<span class="glyphicon glyphicon-equalizer" aria-hidden="true" ></span>&nbsp;&nbsp;<%=playlist.view%>
+			</a>
+	    	<a id='playlist_like_<%=playlist.id%>' href="#" class="btn btn-link" style="color:#414141; text-decoration:none;" data-toggle="tooltip" data-placement="top" title="좋아요 수">
+  			<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>&nbsp;&nbsp;<%=playlist.like%>
+			</a><br />
+			<span style="font-size:12px; margin-left:10px;">게시일: <%=created%></span><br />
+
+	    </div>
+    </div>
+</div>
+
+<hr style="margin: 0px;">
+
+

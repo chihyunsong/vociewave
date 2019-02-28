@@ -1,0 +1,13 @@
+NProgress.done();
+<% if !@error.nil? %>
+	alert("플레이리스트 제목은 최소 2자이상 10자 미만이여야 합니다.");
+<% else %>
+	$("#new_playlist_title").val("");
+	<% if @from.nil? %>
+		$("#checkbox_playlists").append('<div class="bs-callout bs-callout-danger div_hover_background_color" style="padding-left:3px; padding-bottom:3px;"><p><input type="checkbox" name="checked[]" value=<%= @playlist.id %> > <%= @playlist.title%> </p></div>');
+	<% else %>
+		$('#user_show_main_content').append("<%= j render partial: 'playlists/playlist', :locals => {:playlist => @playlist, :is_self => @self}%>")
+	<% end %>
+	alert("플레이리스트 <%= @playlist.title %>을 성공적으로 만들었습니다.")
+
+<% end %>

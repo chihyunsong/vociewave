@@ -1,0 +1,15 @@
+$('#user_show_main_content').html('<h3><b><%= @user.nick_name%></b>님의 플레이리스트 </h3><br/>')
+$("#more_records").html("");
+
+<% if @playlists.empty? %>
+	$('#user_show_main_content').append('<%=@user.nick_name%> 님은 저장된 플레이리스트가 없습니다.')
+<% else %>
+	<% for i in 0..@playlists.length-1 %>
+
+	<% p = Playlist.find(@playlists[i].id) %>
+
+		$('#user_show_main_content').append("<%= j render partial: 'playlists/playlist', :locals => {:playlist => p, :is_self => @self}%>")
+	<% end%>
+<% end %>
+
+$('#playlist_modal').modal('hide');

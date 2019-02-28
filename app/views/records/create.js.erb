@@ -1,0 +1,9 @@
+<% if @upload == true %>
+	$('#file_path').val('<%=@hashed_name%>');
+<% else %>
+	<% if @error %>
+		alert('<%=@error%>');
+	<% else %>
+		location.reload();
+	<% end %>
+<% end %>

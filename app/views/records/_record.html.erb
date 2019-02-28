@@ -1,0 +1,94 @@
+<% sec = Time.now - record.created_at 
+if sec > 60*60*24
+	string = (sec / (60*60*24)).to_i.to_s + " 일 전"
+elsif sec > 60*60
+	string = (sec / (60*60)).to_i.to_s + " 시간 전"
+elsif sec > 60
+	string = (sec / 60).to_i.to_s + " 분 전"
+else
+	string = sec.to_i.to_s + " 초 전"
+end
+%>
+
+<div style=" padding-left:10px; padding-bottom:3px; z-index: -1" class="bs-callout bs-callout-danger div_hover_background_color" id="">
+    <div class="row">
+    	<div class="col-md-2">
+		    <a href="/users/<%=record.user.id%>" style="font-weight: bold; color:#560E06; font-size:12px; margin: auto;" class="show_progress_bar">
+		    <%= image_tag(record.user.profile_pic.url(:thumb), size: '90x90', class: 'rcorners') %><br />
+		    <%= record.user.nil? ? 'undefined' : record.user.nick_name%></a>
+	    </div>
+	    <div class="col-md-7" style="padding-top:10px;">
+		    <% if defined?(is_self) and !is_self.nil? and is_self and record.user_id == current_user.id %>
+		    <div style ="float:right" >
+			    <a href= "<%=edit_record_path(record)%>" type="button" class="btn btn-info btn-sm show_progress_bar">
+	          	<span class="glyphicon glyphicon-edit"></span> 수정 </a>
+	        </div>
+	        <% else %>
+		    <div style ="float:right;" >
+			    <a href= "/report_form?id=<%=record.id%>" type="button" class="btn btn-danger btn-sm" data-remote=true>
+	          	<span class="glyphicon glyphicon-bell"></span> 신고 </a>
+	        </div> 
+	        <% end %>
+			    <h4>
+				    <% if record.private? %>
+				    	<span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+				    <% end %>
+					
+				    <a href="<%=url_for(:controller => :records, :action => :show, :id => record.id)%>" style="color:#444444;" class="show_progress_bar"><span class="a_hover_enlarge" style="font-weight: bold; color:#444444;"><%=record.title%></span></a>
+
+			    </h4>
+			
+		    <div class="row">
+		    	<div class="col-md-2 record_button">
+		    	<% if browser.mobile? or browser.tablet? %>
+	    			<button id="play_<%=record.id%>" class="individual_play_button btn btn-sm btn-default" onclick='add_song_to_footer("<%=record.title%>","<%=record.user.nick_name%>","<%=record.file.url%>","<%=record.id%>","<%=record.user.id%>")'>플레이</button>
+					<button id="pause_<%=record.id%>" class="individual_pause_button btn btn-sm btn-default" style="display:none" onclick="pause_song('<%=record.id%>')">중지</button>
+		    	<% else %>
+					<div id="play_<%=record.id%>" class="individual_play_button control_button" style="height:50px; width:50px; float:left; background-image:url('/assets/red-play-large.png')" onclick='add_song_to_footer("<%=record.title%>","<%=record.user.nick_name%>","<%=record.file.url%>","<%=record.id%>","<%=record.user.id%>")'></div>
+					<div id="pause_<%=record.id%>" class="individual_pause_button control_button" style="height:50px; width:50px; float:left; background-image:url('/assets/red-pause-large.png'); display:none" onclick="pause_song('<%=record.id%>')"></div>
+				<% end %>
+	          	</div>
+				<div class="col-md-10">
+					<div class="row " style="margin-bottom:8px; margin-top:5px;">
+					<div style="float:left;margin-left:16px" class="record_current_time">
+	          		<span id="current_minute_<%=record.id%>">0</span>:<span id="current_second_<%=record.id%>">00</span>
+		          	</div>
+		          	<div>
+		          	<input id="slider_<%=record.id%>" type="range" class="amplitude-song-slider record_slider" value="0" style="width:76%;float:left;margin-left:5px;margin-top:2px">
+				  	</div>
+				  	<div style="float:left;margin-left:5px" class="record_duration_time">
+				  	<span id="duration_minute_<%=record.id%>">0</span>:<span id="duration_second_<%=record.id%>">00</span>
+				  	</div>
+				  	</div>
+				  	<a href="/increment_like?id=<%=record.id%>" type="button" class="btn btn-primary btn-sm" data-remote="true"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;좋아요</a>
+				    <button type="button" class="btn btn-success btn-sm" onclick="show_share_address('<%=request.original_url[/[^\/]*\/\/[^\/]*\//][0..-2] + url_for(:controller => :records, :action => :show, :id => record.id)%>', '<%=record.title%>', '<%=record.description%>')"><span class="glyphicon glyphicon-share" aria-hidden="true"></span>&nbsp;공유하기</button>
+				    <a href="<%=url_for(:controller => :records, :action => :short_comment_list, :id => record.id)%>" type="button" class="btn btn-default btn-sm" data-remote="true"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>&nbsp;댓글보기</a>
+				    <a href="/add_to_playlist_form?id=<%=record.id%>" type="button" class="btn btn-default btn-sm" style="float:right", data-remote="true"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="플레이리스트에 추가"></span>&nbsp;추가</a>
+	          	</div>
+	        </div>
+		    
+		</div>	    
+	    <div class="col-md-3" style="padding-top:17px;">
+	    	<a href="#" class="btn btn-link" style="color:#414141; text-decoration:none;" data-toggle="tooltip" data-placement="top" title="플레이 횟수">
+  			<span class="glyphicon glyphicon-equalizer" aria-hidden="true" ></span>&nbsp;&nbsp;<%=record.view%>
+			</a>
+	    	<a id='audio_like_<%=record.id%>' href="/increment_like?id=<%=record.id%>" data-remote="true" class="btn btn-link" style="color:#414141; text-decoration:none;" data-toggle="tooltip" data-placement="top" title="좋아요 수">
+  			<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>&nbsp;&nbsp;<%=record.like%>
+			</a><br />
+			<span style="font-size:12px; margin-left:10px;">게시일: <%=string%></span>
+	    </div>
+    </div>
+    <div class="row">
+    	<div class="col-md-2"></div>
+    	<div id="comment_record_<%=record.id%>" class="col-md-8" style="display:none"></div>
+	    <div class="col-md-2"></div>
+    </div>
+</div>
+
+<hr style="margin: 0px;">
+
+
+
+<% total_length = record.title.length + record.description.length
+	    total_length > 40 ? description = record.description[0...40-record.title.length] + "..." : description = record.description %>
+

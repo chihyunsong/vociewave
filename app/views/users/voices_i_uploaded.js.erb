@@ -1,0 +1,16 @@
+NProgress.done();
+$('#user_show_main_content').html('<h3>내가 업로드한 보이스들</h3><br/>')
+
+<% (0..4).each do |i| %>
+<% if !session[:records][i].nil? %>
+	<% r = Record.find(session[:records][i]) %>
+		$('#user_show_main_content').append("<%= j render partial: 'records/record', :locals => {:record => r, :is_self => @self} %>")
+	<% end%>
+<% end %>
+
+<% if session[:records].length > 5 %>
+$("#more_records").html("<a data-remote='true' class='show_progress_bar' href='/users_show_more?id=5&user_id=<%=current_user.id%>' style='font-weight: bold; color:#861609; font-size:15px; float:right;'>더 보기...</a>")
+<% else %>
+$("#more_records").html("")
+<% end %>
+configureNProgress();

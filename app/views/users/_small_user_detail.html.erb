@@ -1,0 +1,32 @@
+<% if @type == 'followers' %>
+	<h3><span style="font-weight:bold;"><%=@user.nick_name%></span>님을 팔로우 하는 유저들</h3>
+<% else %>
+	<h3><span style="font-weight:bold;"><%=@user.nick_name%></span>님이 팔로우 하는 유저들</h3>
+<% end %>
+<br/>
+<% if @users.length == 0 %>
+	아직 없습니다.
+<% end %>
+<% @users.each do |u| %>
+	<div style=" padding-left:10px; padding-bottom:3px;" class="bs-callout bs-callout-danger div_hover_background_color">
+    <div class="row">
+	    <div class="col-md-2">
+	    <a href="/users/<%=u.id%>" class="show_progress_bar" style="font-weight: bold; color:#560E06; font-size:12px; margin: auto;">
+	    <%= image_tag(u.profile_pic.url(:thumb), size: '90x90', class: 'rcorners') %><br />
+    		<%=u.nick_name%></a>
+	    </div>
+	   
+	    <div class="col-md-7" style="padding-top:17px;">
+		    <%=u.description%>
+	    </div>
+	    
+	    <div class="col-md-3" style="padding-top:17px;">
+	    	<a href="#" class="btn btn-link" style="color:#414141; text-decoration:none;">
+  			<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>&nbsp;&nbsp;인기도: <%=u.fame%>
+			</a><br />
+	    </div>
+    </div>
+</div>
+<hr style="margin: 0px;">
+	<br />
+<% end %>

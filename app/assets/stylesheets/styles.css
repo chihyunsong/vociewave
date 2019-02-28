@@ -1,0 +1,41 @@
+#play-pause{
+    width: 30px;
+    height: 30px;
+    margin-top: 7px;
+    cursor: pointer;
+}
+.amplitude-paused{
+    background-image: url('/assets/red-play.png');
+    background-repeat: no-repeat;
+}
+.amplitude-playing{
+    background-image: url('/assets/red-pause.png');
+    background-repeat: no-repeat;
+}
+.amplitude-next{
+    background-image: url('/assets/red-next.png');
+    background-repeat: no-repeat;
+}
+.amplitude-prev{
+    background-image: url('/assets/red-prev.png');
+    background-repeat: no-repeat;
+}
+#now-playing-artist{
+    color: #560E06;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+}
+#now-playing-album{
+    color: #7b7b7b;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+}
+#now-playing-title{
+    color: #560E06;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    margin-right: 10px;
+}

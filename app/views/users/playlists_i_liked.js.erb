@@ -1,0 +1,18 @@
+NProgress.done();
+$('#user_show_main_content').html('<h3>내가 좋아한 플레이리스트들</h3><br/>')
+
+<% (0..4).each do |i| %>
+	<% if !session[:records][i].nil? %>
+	<% p = Playlist.find(session[:records][i]) 
+	if !p.private %>
+		$('#user_show_main_content').append("<%= j render partial: 'playlists/playlist', :locals => {:playlist => p, :is_self => @self}%>")
+	<% end %>
+	<% end%>
+<% end %>
+
+<% if session[:records].length > 5 %>
+$("#more_records").html("<a data-remote='true' class='show_progress_bar' href='/playlists_show_more?id=5&user_id=<%=current_user.id%>' style='font-weight: bold; color:#861609; font-size:15px; float:right;'>더 보기...</a>")
+<% else %>
+$("#more_records").html("")
+<% end %>
+configureNProgress();

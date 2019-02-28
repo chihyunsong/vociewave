@@ -1,0 +1,18 @@
+<br />
+<%= form_tag('/comments', multipart: true, remote: true) do %>
+	<div>
+	<%= text_area_tag :description, nil, rows: 1, cols: 5, :class => 'form-control comment_text', :value => "", :placeholder => "댓글", :style => 'width:77%;float:left' %>
+	<input type="hidden" name="record_id" value="<%=@record.id%>">
+	<button type="submit" class="btn btn-default btn-md" style="float:left">등록</button>
+	</div>
+<% end %>
+<br/>
+<div id="list_comments_<%=@record.id%>">
+<% @comments.each do |c| %>
+	<%= render :partial => 'comments/small_detail', :locals => {:comment => c} %>
+<% end %>
+
+</div>
+<% if @comments.length >14 %>
+<a href="/records/<%=@record.id%>" class="user_nick_name" style="float:left">더 보기...</a>
+<% end %>
