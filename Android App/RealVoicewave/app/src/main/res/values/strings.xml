@@ -1,0 +1,79 @@
+<resources>
+    <string name="app_name">Voicewave</string>
+
+    <!--Toolbar used strings-->
+    <string name="app_korname">보이스웨이브</string>
+    <string name="app_voiceUpload">보이스업로드</string>
+    <string name="app_voiceRecord">보이스 녹음</string>
+
+
+    <!-- menu used strings-->
+    <string name="action_settings">Settings</string>
+    <string name="my_profile">내 프로필</string>
+    <string name="voice_upload">보이스 녹음/업로드</string>
+    <string name="logout">로그아웃</string>
+    
+    <string name="record">직접 녹음</string>
+
+
+    <!-- category and music sorting string-->
+    <string name="popularity">인기순</string>
+    <string name="recency">최신순</string>
+    <string name="today">오늘</string>
+    <string name="week">이번주</string>
+    <string name="all">전체</string>
+
+    <string name="song">노래</string>
+    <string name="compose">작곡</string>
+    <string name="instrumental">악기</string>
+    <string name="voiceact">성우</string>
+    <string name="humor">유머</string>
+    <string name="etc">기타</string>
+    <string name="profile">님의 프로필</string>
+
+    <!--recorder page-->
+    <string name="start_recording">녹음</string>
+    <string name="stop_recording">중지</string>
+
+    <!--upload page-->
+    <string name="upload_confirm">업로드</string>
+
+    <string name="google_login_button_text">Google+</string>
+    <string name="google_login_required">구글어카운트가 필요합니다.</string>
+    <string name="select_account_dialog_title">Google 어카운트를 선택해주세요.</string>
+    <string name="no_account_found_message">Google 어카운트를 찾을수 없습니다.</string>
+    <string name="connection_error_message">연결상태가 안좋습니다.</string>
+    <string name="google_login_success">Google 어카운트로 로그인하셨습니다.</string>
+    <string name="facebook_login_success">Facebook 어카운트로 로그인하셨습니다.</string>
+    <string name="login_success">로그인에 성공 하셨습니다.</string>
+    <string name="login_title">로그인</string>
+    <string name="login_content">로그인중 입니다.</string>
+    <string name="no_description">자기소개가 아직 없습니다.</string>
+    <string name="title_activity_account_manager">account_manager</string>
+    <string name="no_email">이메일을 정확히 입력해주세요.</string>
+    <string name="no_password">패스워드를 입력해주세요.</string>
+    <string name="check_password">이메일과 패스워드를 체크해주세요.</string>
+    <string name="password_length">비밀번호는 최소 8글자 이상이여야 합니다.</string>
+    <string name="nickname_length">닉네임은 최소 2글자 이상이여야 합니다.</string>
+    <string name="password_confirmation">비밀번호 재확인이 틀립니다.</string>
+    <string name="signup_sucess">회원가입에 성공하셨습니다. 이메일을 확인해주세요.</string>
+    <string name="nickname_duplicate">닉네임이 이미 존재합니다.</string>
+    <string name="email_duplicate">이메일이 이미 존재합니다.</string>
+    <string name="like_success">이 보이스가 좋아요!</string>
+    <string name="like_fail">이미 좋아하신 보이스 입니다.</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_signup">Signup</string>
+    <string name="facebook_app_id">781345011984154</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="title_activity_mainpage">MainpageActivity</string>
+    <string name="title_activity_user_profile">UserProfileActivity</string>
+    <string name="title_activity_upload">UploadActivity</string>
+    <string name="title_activity_upload_confirm">UploadConfirmActivity</string>
+    <string name="comment_success">코멘트가 성공적으로 작성되었습니다.</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_recorder">RecorderActivity</string>
+    <string name="title_activity_record_profile">RecordProfileActivity</string>
+
+</resources>

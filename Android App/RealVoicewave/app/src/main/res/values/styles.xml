@@ -1,0 +1,39 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+    
+
+    <style name="navBarTheme" parent ="Theme.AppCompat.Light.NoActionBar">
+        <!-- android:textColorPrimary is the  color of the title text in the Toolbar, in the Theme.AppCompat theme:  -->
+        <item name="android:textColorPrimary">@android:color/black</item>
+        <!-- android:actionMenuTextColor is the color of the text of
+              action (menu) items in the Toolbar, at least in the
+              Theme.AppCompat theme.
+              For some reason, they already get the textColorPrimary
+              when running on API 21, but not on older versions of
+              Android, so this is only necessary to support older
+              Android versions.-->
+        <item name="actionMenuTextColor">@android:color/black</item>
+    </style>
+    
+    <style name="buttonstyle"  parent="android:Theme">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:tint">#F44336</item>
+
+
+    </style>
+
+    <style name="FacebookLoginButton">
+        <item name="android:background">@drawable/facebook_bg</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">21sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:height">48dp</item>
+    </style>
+
+
+
+</resources>

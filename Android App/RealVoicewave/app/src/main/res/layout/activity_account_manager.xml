@@ -1,0 +1,116 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/backgroundScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:isScrollContainer="false" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <!-- The FullScreen, Center-Cropped Image Background -->
+            <ImageView
+                android:id="@+id/backgroundImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/music_person" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:background="#7c000000">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/voicewave"
+            android:adjustViewBounds="true"
+            android:layout_weight="2"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/linearLayout"
+            android:layout_weight="1"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:gravity="bottom">
+
+            <Button
+                android:id="@+id/google_login_button"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:textSize="21sp"
+                android:text="Google+로 로그인"
+                android:textColor="@android:color/white"
+                android:background="@drawable/google_bg"
+                android:layout_marginBottom="20dp"/>
+
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/facebook_login_button"
+                    xmlns:fb="http://schemas.android.com/apk/res-auto"
+                    style="@style/FacebookLoginButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_centerHorizontal="true"
+                    fb:com_facebook_login_text="페이스북으로 로그인"
+                    fb:com_facebook_logout_text="페이스북으로 로그인"/>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp">
+                <TextView
+                    android:id="@+id/login_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="로그인"
+                    android:textColor="#FFFFFF"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:gravity="center_vertical|center_horizontal"/>
+
+                <TextView
+                    android:id="@+id/signup_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="회원가입"
+                    android:textColor="#FFFFFF"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:gravity="center_vertical|center_horizontal"/>
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="* 페이스북, 구글+ 아이디로 로그인이 가능합니다."
+                android:id="@+id/textView2"
+                android:layout_marginTop="20dp"
+                android:textSize="13dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#ffffffff"
+                android:padding="15dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

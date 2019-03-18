@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="genre">
+        <item>전체</item>
+        <item>노래</item>
+        <item>작곡</item>
+        <item>악기</item>
+        <item>성우</item>
+        <item>유머</item>
+        <item>기타</item>
+    </string-array>
+</resources>

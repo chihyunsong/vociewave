@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.voicewave.voicewave.UserProfileFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pictureLoading"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:indeterminate="false" />
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/user_profile_img"
+            android:layout_gravity="center_horizontal|top"
+            android:maxWidth="150dp"
+            android:maxHeight="150dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textview_profile_nickname"
+            android:textSize="20dp"
+            android:gravity="center_horizontal" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_profile_detail"
+            android:enabled="false"
+            android:textSize="14dp"
+            android:textColorHighlight="#ff0424"
+            android:textColor="#0b0b0b"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_weight="0.25"
+            android:gravity="top" />
+
+    </LinearLayout>
+
+</LinearLayout>

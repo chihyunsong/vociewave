@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/song"
+        android:title="@string/song"/>
+    <item android:id="@+id/compose"
+    android:title="@string/compose" />
+    <item android:id="@+id/instrumental"
+        android:title="@string/instrumental"/>
+    <item android:id="@+id/voiceact"
+        android:title="@string/voiceact" />
+    <item android:id="@+id/humor"
+        android:title="@string/humor"/>
+    <item android:id="@+id/etc"
+        android:title="@string/etc"/>
+
+
+</menu>
